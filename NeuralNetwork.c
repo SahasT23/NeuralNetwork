@@ -147,11 +147,44 @@ int main(void) {
       for(int j = 0; j < numHiddenNodes; j++){
         hiddenLayerBias[j] += deltaHidden[j] * lr;
         for(int k = 0; k < numInputs; k++){
-          hiddenWeights[k][j] += hiddenLayer[k] * deltaHidden[j] * lr;
+          hiddenWeights[k][j] += training_inputs[i][k] * deltaHidden[j] * lr;
         }
       }
-
-
     }
   }
+
+      // Print final weights after training
+    
+    fputs ("Final Hidden Weights\n[ ", stdout);
+    for (int j=0; j<numHiddenNodes; j++) {
+        fputs ("[ ", stdout);
+        for(int k=0; k<numInputs; k++) {
+            printf ("%f ", hiddenWeights[k][j]);
+        }
+        fputs ("] ", stdout);
+    }
+    
+    fputs ("]\nFinal Hidden Biases\n[ ", stdout);
+    for (int j=0; j<numHiddenNodes; j++) {
+        printf ("%f ", hiddenLayerBias[j]);
+    }
+
+    fputs ("]\nFinal Output Weights", stdout);
+    for (int j=0; j<numOutputs; j++) {
+        fputs ("[ ", stdout);
+        for (int k=0; k<numHiddenNodes; k++) {
+            printf ("%f ", outputWeights[k][j]);
+        }
+        fputs ("]\n", stdout);
+    }
+
+    fputs ("Final Output Biases\n[ ", stdout);
+    for (int j=0; j<numOutputs; j++) {
+        printf ("%f ", outputLayerBias[j]);
+        
+    }
+    
+    fputs ("]\n", stdout);
+
+    return 0;
 }
