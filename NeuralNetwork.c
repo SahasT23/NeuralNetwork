@@ -49,5 +49,22 @@ int main(void) {
                                                         {1.0f},
                                                         {0.0f}};
 
+  // need to do backprop
+
+  for(int i = 0; i < numInputs; i++){
+    for(int j = 0; i < numHiddenNodes; j++){
+      hiddenWeights[i][j] = init_weights();
+    }
+  }
+
+  for(int i = 0; i < numInputs; i++){
+    for(int j = 0; i < numOutputs; j++){
+      outputWeights[i][j] = init_weights();
+    }
+  }
+    
+  for(int i = 0; i < numOutputs; i++){
+    outputLayerBias[i] = init_weights();
+    }
 
 }
