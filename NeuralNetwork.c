@@ -133,7 +133,25 @@ int main(void) {
         deltaHidden[j] = error * dSigmoid(hiddenLayer[j]);
       }
 
-      
+      // Apply output weight changes
+
+      for(int j = 0; j < numOutputs; j++){
+        outputLayerBias[j] += deltaOutput[j] * lr;
+        for(int k = 0; k < numHiddenNodes; k++){
+          outputWeights[k][j] += hiddenLayer[k] * deltaOutput[j] * lr;
+        }
+      }
+
+      // Apply hidden weight changes
+
+      for(int j = 0; j < numHiddenNodes; j++){
+        hiddenLayerBias[j] += deltaHidden[j] * lr;
+        for(int k = 0; k < numInputs; k++){
+          hiddenWeights[k][j] += hiddenLayer[k] * deltaHidden[j] * lr;
+        }
+      }
+
+
     }
   }
 }
