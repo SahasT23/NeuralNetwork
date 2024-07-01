@@ -49,8 +49,6 @@ int main(void) {
                                                         {1.0f},
                                                         {0.0f}};
 
-  // need to do backprop
-
   for(int i = 0; i < numInputs; i++){
     for(int j = 0; i < numHiddenNodes; j++){
       hiddenWeights[i][j] = init_weights();
@@ -112,6 +110,30 @@ int main(void) {
             training_inputs[i][0], training_inputs[i][1],
             outputLayer[0], training_outputs[i][0]);
 
+      // Backprop process
+
+      // Change in output weights
+
+      double deltaOutput[numOutputs];
+      
+      for(int j = 0; j < numOutputs; j++){
+        double error = (training_outputs[i][j] - outputLayer[j]);
+        deltaOutput[j] = error * dSigmoid(outputLayer[j]);
+      }
+
+      // Compute the change in hidden weights
+
+      double deltaHidden[numHiddenNodes];
+      for(int j = 0; j < numHiddenNodes; j++){
+        double error = 0.0f;
+
+        for(int k = 0; k < numOutputs; k++) {
+          error += deltaOutput[k] * outputWeights[j][k];
+        }
+        deltaHidden[j] = error * dSigmoid(hiddenLayer[j]);
+      }
+
+      
     }
   }
 }
