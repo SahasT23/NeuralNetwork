@@ -50,24 +50,28 @@ int main(void) {
                                                         {0.0f}};
 
   for(int i = 0; i < numInputs; i++){
-    for(int j = 0; i < numHiddenNodes; j++){
+    for(int j = 0; j < numHiddenNodes; j++){
       hiddenWeights[i][j] = init_weights();
     }
   }
 
-  for(int i = 0; i < numInputs; i++){
-    for(int j = 0; i < numOutputs; j++){
+  for(int i = 0; i < numHiddenNodes; i++){
+    for(int j = 0; j < numOutputs; j++){
       outputWeights[i][j] = init_weights();
     }
   }
     
+  for(int i = 0; i < numHiddenNodes; i++){
+    hiddenLayerBias[i] = init_weights();
+  }
+
   for(int i = 0; i < numOutputs; i++){
     outputLayerBias[i] = init_weights();
   }
 
   // getting training set order done
 
-  int trainingSetOrder[] = {0,1,2,3};
+  int trainingSetOrder[] = {0, 1, 2, 3};
 
   int numberOfEpochs = 10000;
 
@@ -77,7 +81,7 @@ int main(void) {
 
     shuffle(trainingSetOrder, numTrainingSets);
 
-    for(int x = 0; x , numTrainingSets; x++){
+    for(int x = 0; x < numTrainingSets; x++){
 
       int i = trainingSetOrder[x];
 
@@ -87,12 +91,10 @@ int main(void) {
 
       for(int j = 0; j < numHiddenNodes; j++){
         double activation = hiddenLayerBias[j];
-
         for(int k = 0; k < numInputs; k++){
           activation += training_inputs[i][k] * hiddenWeights[k][j];
         }
         hiddenLayer[j] = sigmoid(activation);
-
       }
 
       // Computing output layer activation 
@@ -106,9 +108,9 @@ int main(void) {
         outputLayer[j] = sigmoid(activation);
       }
 
-      printf("Input: %g   Output: %g   Predicted Output: %g \n",
+      printf("Input: %g %g   Output: %g   Predicted Output: %g \n",
             training_inputs[i][0], training_inputs[i][1],
-            outputLayer[0], training_outputs[i][0]);
+            training_outputs[i][0], outputLayer[0]);
 
       // Backprop process
 
@@ -153,38 +155,37 @@ int main(void) {
     }
   }
 
-      // Print final weights after training
-    
-    fputs ("Final Hidden Weights\n[ ", stdout);
-    for (int j=0; j<numHiddenNodes; j++) {
-        fputs ("[ ", stdout);
-        for(int k=0; k<numInputs; k++) {
-            printf ("%f ", hiddenWeights[k][j]);
-        }
-        fputs ("] ", stdout);
+  // Print final weights after training
+  
+  fputs ("Final Hidden Weights\n[ ", stdout);
+  for (int j=0; j<numHiddenNodes; j++) {
+    fputs ("[ ", stdout);
+    for(int k=0; k<numInputs; k++) {
+      printf ("%f ", hiddenWeights[k][j]);
     }
-    
-    fputs ("]\nFinal Hidden Biases\n[ ", stdout);
-    for (int j=0; j<numHiddenNodes; j++) {
-        printf ("%f ", hiddenLayerBias[j]);
-    }
+    fputs ("] ", stdout);
+  }
+  
+  fputs ("]\nFinal Hidden Biases\n[ ", stdout);
+  for (int j=0; j<numHiddenNodes; j++) {
+    printf ("%f ", hiddenLayerBias[j]);
+  }
 
-    fputs ("]\nFinal Output Weights", stdout);
-    for (int j=0; j<numOutputs; j++) {
-        fputs ("[ ", stdout);
-        for (int k=0; k<numHiddenNodes; k++) {
-            printf ("%f ", outputWeights[k][j]);
-        }
-        fputs ("]\n", stdout);
+  fputs ("]\nFinal Output Weights", stdout);
+  for (int j=0; j<numOutputs; j++) {
+    fputs ("[ ", stdout);
+    for (int k=0; k<numHiddenNodes; k++) {
+      printf ("%f ", outputWeights[k][j]);
     }
-
-    fputs ("Final Output Biases\n[ ", stdout);
-    for (int j=0; j<numOutputs; j++) {
-        printf ("%f ", outputLayerBias[j]);
-        
-    }
-    
     fputs ("]\n", stdout);
+  }
 
-    return 0;
+  fputs ("Final Output Biases\n[ ", stdout);
+  for (int j=0; j<numOutputs; j++) {
+    printf ("%f ", outputLayerBias[j]);
+  }
+  
+  fputs ("]\n", stdout);
+
+  return 0;
 }
