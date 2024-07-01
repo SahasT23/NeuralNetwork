@@ -4,6 +4,8 @@
 
 // simple neural network to learn the XOR function
 
+double init_weights() {return ((double)rand()) / ((double)RAND_MAX);}
+
 #define numInputs 2
 #define numHiddenNodes 2
 #define numOutputs 1
@@ -31,5 +33,5 @@ int main(void) {
                                                         {1.0f},
                                                         {0.0f}};
 
-  
+
 }
